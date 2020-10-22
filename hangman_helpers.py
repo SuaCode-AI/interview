@@ -21,10 +21,24 @@ def getList():
     return titles
 
 def getWord(list):
-    choice = random.randint(0, len(list))
+    choice = random.randint(0, len(list)-1)
     title = list[choice]
-    spaces = [m.start() for m in re.finditer( " " , title)]
-    
-    initial_hidden = [i for i in range(len(title)) if i not in spaces ]
+    initial_hidden = [i for i in range(len(title)) if title[i] != " " ]
         
     return title, initial_hidden
+
+def word_to_underscores(word, hidden):
+    str = []
+    for i in range(len(word)):
+        if i in hidden:
+            str.append("_")
+        else:
+            str.append(word[i])
+    return " ".join(str)
+
+def apply_letter(letter, word, hidden):
+    letter_locs = [m.start() for m in re.finditer( letter , word)]
+    for i in letter_locs:
+        hidden.remove(i)
+    return hidden
+          
